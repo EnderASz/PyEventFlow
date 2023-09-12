@@ -116,6 +116,9 @@ class Event(BaseModel, t.Generic[_EventHandlerT]):
 
     def emit_to(self, handler: _EventHandlerT) -> None:
         # TODO: Should it raise an exception, warning or just ignore it?
+        #   I think it should ignore event when handler is not compatible with
+        #   it. If some event will be emit to non-compatible event handler, it
+        #   won't handle it.
         # if (self.get_handler_method(handler)) is None:
         #     raise EventNotSupported(
         #         f"{self.__class__} event is not supported by: {handler}. "
