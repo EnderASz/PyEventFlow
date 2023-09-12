@@ -4,9 +4,7 @@ from abc import ABC, abstractmethod
 
 from pluginable_core import exc
 from pluginable_core.context import AbstractAsyncContextStackManager
-
-if t.TYPE_CHECKING:
-    from pluginable_core.event import Event
+from pluginable_core.event import Event, EventHandler
 
 
 _PluginsBearerT = t.TypeVar(
@@ -75,10 +73,11 @@ class PluginsBearer(t.Generic[_PluginT], AbstractAsyncContextStackManager):
         :param event:
         :return:
         """
-        # TODO: This assumes all plugins are event handlers - is it true?
-        #   Maybe this method shouldn't be implemented here?
         for plugin in self.plugins:
-            event.emit_to(plugin)
+            # TODO: Is this legit solution for handling if plugin have proper
+            #  interface for handling events?
+            if isinstance(plugin, EventHandler):
+                event.emit_to(plugin)
 
 
 class Plugin(
