@@ -10,7 +10,7 @@ _EventT = t.TypeVar("_EventT", bound="Event")
 
 
 class EventHandler(t.Generic[_EventT]):
-    def __init__(self):
+    def __init__(self) -> None:
         self._loop_lock = asyncio.Lock()
         self._event_queue: asyncio.Queue[_EventT] = asyncio.Queue()
 

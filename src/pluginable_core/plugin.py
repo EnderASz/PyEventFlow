@@ -13,7 +13,7 @@ _PluginT = t.TypeVar("_PluginT", bound="Plugin")
 
 
 class PluginsBearer(t.Generic[_PluginT], AsyncContextStackManager):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self._plugins: list[_PluginT] = []
 
@@ -77,7 +77,7 @@ class PluginsBearer(t.Generic[_PluginT], AsyncContextStackManager):
 
 
 class Plugin(t.Generic[_PluginsBearerT], AsyncContextStackManager):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self._bearer: _PluginsBearerT | None = None
 
