@@ -1,13 +1,10 @@
 import contextlib
 import typing as t
-from abc import ABC, abstractmethod
 from types import TracebackType
 from typing import Self
 
 
-class AbstractAsyncContextStackManager(
-    contextlib.AbstractAsyncContextManager, ABC
-):
+class AsyncContextStackManager(contextlib.AbstractAsyncContextManager):
     def __init__(self) -> None:
         self._context_stack: contextlib.AsyncExitStack | None = None
 
@@ -15,11 +12,10 @@ class AbstractAsyncContextStackManager(
     def context_entered(self) -> bool:
         return self._context_stack is not None
 
-    @abstractmethod
     async def _establish_context(
         self, context_stack: contextlib.AsyncExitStack
     ) -> contextlib.AsyncExitStack:
-        ...
+        return context_stack
 
     async def __aenter__(self) -> Self:
         if self.context_entered:

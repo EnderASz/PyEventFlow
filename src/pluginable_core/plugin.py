@@ -1,9 +1,8 @@
 import contextlib
 import typing as t
-from abc import ABC, abstractmethod
 
 from pluginable_core import exc
-from pluginable_core.context import AbstractAsyncContextStackManager
+from pluginable_core.context import AsyncContextStackManager
 from pluginable_core.event import Event, EventHandler
 
 
@@ -13,7 +12,7 @@ _PluginsBearerT = t.TypeVar(
 _PluginT = t.TypeVar("_PluginT", bound="Plugin")
 
 
-class PluginsBearer(t.Generic[_PluginT], AbstractAsyncContextStackManager):
+class PluginsBearer(t.Generic[_PluginT], AsyncContextStackManager):
     def __init__(self):
         super().__init__()
         self._plugins: list[_PluginT] = []
@@ -77,9 +76,7 @@ class PluginsBearer(t.Generic[_PluginT], AbstractAsyncContextStackManager):
                 event.emit_to(plugin)
 
 
-class Plugin(
-    t.Generic[_PluginsBearerT], AbstractAsyncContextStackManager, ABC
-):
+class Plugin(t.Generic[_PluginsBearerT], AsyncContextStackManager):
     def __init__(self):
         super().__init__()
         self._bearer: _PluginsBearerT | None = None
@@ -93,7 +90,7 @@ class Plugin(
 
 
 class EventHandlingPlugin(
-    t.Generic[_PluginsBearerT], Plugin[_PluginsBearerT], EventHandler, ABC
+    t.Generic[_PluginsBearerT], Plugin[_PluginsBearerT], EventHandler
 ):
     async def run(self) -> None:
         await self.run_event_loop()
