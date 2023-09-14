@@ -71,12 +71,9 @@ class PluginsBearer(t.Generic[_PluginT], AbstractAsyncContextStackManager):
         Emits given event to plugins.
 
         :param event:
-        :return:
         """
         for plugin in self.plugins:
-            # TODO: Is this legit solution for handling if plugin have proper
-            #  interface for handling events?
-            if isinstance(plugin, EventHandler):
+            if isinstance(plugin, EventHandlingPlugin):
                 event.emit_to(plugin)
 
 
@@ -91,6 +88,12 @@ class Plugin(
     def bearer(self) -> _PluginsBearerT | None:
         return self._bearer
 
-    @abstractmethod
     async def run(self) -> None:
-        ...
+        pass
+
+
+class EventHandlingPlugin(
+    t.Generic[_PluginsBearerT], Plugin[_PluginsBearerT], EventHandler, ABC
+):
+    async def run(self) -> None:
+        await self.run_event_loop()
