@@ -1,7 +1,7 @@
 import itertools
 import typing as t
 import asyncio
-from abc import ABC, abstractmethod
+from abc import ABC
 from enum import StrEnum
 
 from pluginable_core import exc
