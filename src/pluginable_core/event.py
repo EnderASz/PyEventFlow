@@ -24,9 +24,12 @@ class EventHandler(t.Generic[_EventT]):
     async def before_event_loop(self) -> None:
         pass
 
+    async def wait_for_event(self) -> _EventT:
+        return await self._event_queue.get()
+
     async def _event_loop(self) -> t.AsyncGenerator[None, None]:
         while True:
-            event: _EventT = await self._event_queue.get()
+            event = await self.wait_for_event()
             try:
                 if (
                     handler_method := event.get_handler_method(self)
