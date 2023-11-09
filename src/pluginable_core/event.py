@@ -1,7 +1,7 @@
 import asyncio
 import typing as t
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, field_validator
 
 from pluginable_core import exc
 
@@ -109,6 +109,14 @@ class EventHandlerMethod(t.Protocol):
 
 class Event(BaseModel, t.Generic[_EventHandlerT]):
     EVENT_TYPE: str
+
+    @field_validator("EVENT_TYPE")
+    def event_type_validator(cls, value: str):
+        if not value.isalnum():
+            raise ValueError(
+                "Given EVENT_TYPE values is not alphanumeric string."
+            )
+        return value
 
     model_config = ConfigDict(frozen=True)
 
