@@ -4,7 +4,7 @@ import typing as t
 from types import TracebackType
 from typing import Self
 
-from pluginable_core import exc
+from pyflow import exc
 
 
 class AsyncContextStackManager(contextlib.AbstractAsyncContextManager):

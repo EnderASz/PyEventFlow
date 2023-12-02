@@ -3,7 +3,7 @@ from enum import StrEnum
 
 from pydantic import BaseModel, ConfigDict, field_validator
 
-from pluginable_core.proto import EventHandlerMethod
+from pyflow.proto import EventHandlerMethod
 
 
 _EventHandlerT = t.TypeVar("_EventHandlerT", bound="EventHandler")

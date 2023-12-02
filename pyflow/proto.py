@@ -1,8 +1,8 @@
 import typing as t
 
 if t.TYPE_CHECKING:
-    from pluginable_core.event import Event
-    from pluginable_core.handler import EventHandler
+    from pyflow.event import Event
+    from pyflow.handler import EventHandler
 
 
 _EventHandlerT_co = t.TypeVar(

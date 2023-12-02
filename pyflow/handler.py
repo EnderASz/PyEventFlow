@@ -3,8 +3,8 @@ import itertools
 import typing as t
 import asyncio
 
-from pluginable_core import exc
-from pluginable_core.event import (
+from pyflow import exc
+from pyflow.event import (
     LoopCloseRequestEvent,
     SubLoopsCloseRequestEvent,
     EventLoopFlowEvent,
