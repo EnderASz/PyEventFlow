@@ -4,7 +4,7 @@ import typing as t
 from types import TracebackType
 from typing import Self
 
-from pyflow import exc
+from pyeventflow import exc
 
 
 class AsyncContextStackManager(contextlib.AbstractAsyncContextManager):
