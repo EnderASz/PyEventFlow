@@ -1,16 +1,4 @@
-class ContextAlreadyEntered(Exception):
-    ...
-
-
-class MissingContext(Exception):
-    ...
-
-
-class PluginNotRegistered(Exception):
-    ...
-
-
-class PluginAlreadyRegistered(Exception):
+class ContextNotEntered(RuntimeError):
     ...
 
 

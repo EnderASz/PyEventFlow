@@ -1,30 +1,32 @@
+import asyncio
 import contextlib
 import typing as t
 from types import TracebackType
 from typing import Self
 
+from pluginable_core import exc
+
 
 class AsyncContextStackManager(contextlib.AbstractAsyncContextManager):
     def __init__(self) -> None:
-        self._context_stack: contextlib.AsyncExitStack | None = None
+        self.__context_stack: contextlib.AsyncExitStack | None = None
+        self.__context_lock = asyncio.Lock()
 
     @property
     def context_entered(self) -> bool:
-        return self._context_stack is not None
+        return self.__context_lock.locked()
 
     async def _establish_context(
         self, context_stack: contextlib.AsyncExitStack
     ) -> contextlib.AsyncExitStack:
+        await context_stack.enter_async_context(self.__context_lock)
         return context_stack
 
     async def __aenter__(self) -> Self:
-        if self.context_entered:
-            return self
-
         context_stack = contextlib.AsyncExitStack()
         async with context_stack:
             context_stack = await self._establish_context(context_stack)
-            self._context_stack = context_stack.pop_all()
+            self.__context_stack = context_stack.pop_all()
 
         return self
 
@@ -34,9 +36,11 @@ class AsyncContextStackManager(contextlib.AbstractAsyncContextManager):
         exc_val: BaseException | None,
         exc_tb: TracebackType | None,
     ) -> bool | None:
-        if self._context_stack is None:
-            return None
+        if self.__context_stack is None:
+            raise exc.ContextNotEntered(
+                "Tried to exit from not-entered context stack"
+            )
 
-        await self._context_stack.aclose()
-        self._context_stack = None
+        await self.__context_stack.aclose()
+        self.__context_stack = None
         return None
