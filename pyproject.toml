@@ -1,7 +1,25 @@
+[project]
+name = "PyEventFlow"
+version = "0.2.0"
+authors = [
+    {name = "Aleksander Szymborski", email = "olek5188@gmail.com"}
+]
+keywords = [
+    "event",
+    "event_loop"
+]
+classifiers = [
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11"
+]
+dependencies = ["pydantic >= 2.0.3, < 3.0.0"]
+
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools.packages.find]
+include = ["pyeventflow"]
 
 [tool.black]
 line-length = 79
