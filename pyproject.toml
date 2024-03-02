@@ -1,0 +1,54 @@
+# =============================================================================
+# Poetry - Package, Building, Publishing, Dependencies, Enviroment
+[tool.poetry]
+name = "pyeventflow"
+# Placeholder version - https://github.com/tiangolo/poetry-version-plugin?tab=readme-ov-file#version-in-pyprojecttoml
+version = "0"
+description = ""
+authors = ["Aleksander Szymborski <olek5188@gmail.com>"]
+
+# Poetry will populate version from `proxy_lib_poc.__version__`
+[tool.poetry-version-plugin]
+source = "init"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+poetry = "^1.7"
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.6.0"
+black = "^24.1.1"
+pyright = "^1.1.351"
+poetry-version-plugin = "^0.2.0"
+
+[tool.poetry.group.test]
+optional = true
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.0.0"
+
+[tool.poetry_bumpversion.file."pyeventflow/__init__.py"]
+search = '__version__ = "{current_version}"'
+replace = '__version__ = "{new_version}"'
+
+# =============================================================================
+# Black - Code Formatter
+[tool.black]
+line-length = 88
+target-version = ['py312']
+
+# =============================================================================
+# Pyright - Static Type Checker
+[tool.pyright]
+pythonVersion = "3.11"
+
+
+# =============================================================================
+# Build system
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
