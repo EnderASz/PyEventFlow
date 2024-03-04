@@ -38,7 +38,7 @@ replace = '__version__ = "{new_version}"'
 # Black - Code Formatter
 [tool.black]
 line-length = 88
-target-version = ['py312']
+target-version = ['py311']
 
 # =============================================================================
 # Pyright - Static Type Checker
