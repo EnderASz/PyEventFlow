@@ -8,36 +8,38 @@ PyEventFlow is a library simplifying development of event-based apps which inter
 classDiagram
     class `typing.AbstractAsyncContextManager`
     <<interface>> `typing.AbstractAsyncContextManager`
+    
     class `contextlib.AsyncExitStack`
     
-    class Runner
-    <<interface>> Runner
-%%    <<abstract>> Runner
+    class AsyncContextStackManager
+    AsyncContextStackManager --|> `typing.AbstractAsyncContextManager`
+%%    `contextlib.AsyncExitStack` "1" --* "1" AsyncContextStackManager
+     AsyncContextStackManager "1" *-- "1" `contextlib.AsyncExitStack`
+
+    class HandlersBearer
 
     class EventListener
     <<abstract>> EventListener
-    EventListener --|> Runner
-    
-    class _HandlersBearerBase
-    <<abstract>> _HandlersBearerBase
-    _HandlersBearerBase --|> EventListener
+    HandlersBearer --|> EventListener
 
-    class HandlersBearer
-    HandlersBearer --|> _HandlersBearerBase
-%%    HandlersBearer --|> EventListener
+    class EventHandler
+    EventHandler "1..*" --o "*" HandlersBearerBase
+
+    class EventHandlerCallable
+    <<interface>> EventHandlerCallable
+    EventHandler --|> EventHandlerCallable
+
+    class HandlersBearerBase
+    HandlersBearer --|> HandlersBearerBase
 
     class ListenersRunner
     <<abstract>> ListenersRunner
     ListenersRunner --|> Runner
     EventListener "1..*" --o "1" ListenersRunner
-    
-    class EventHandler
-    <<interface>> EventHandler
-    EventHandler "1..*" --o "*" HandlersBearer
 
-    class AsyncContextStackManager
-    AsyncContextStackManager --|> `typing.AbstractAsyncContextManager`
-    
-    `contextlib.AsyncExitStack` "1" --* "1" AsyncContextStackManager
+    class Runner
+    <<interface>> Runner
+%%    <<abstract>> Runner
+    EventListener --|> Runner
 
 ```
